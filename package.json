@@ -1,0 +1,28 @@
+{
+  "name": "nodesample",
+  "version": "1.0.0",
+  "description": "Test nodejs",
+  "main": "index.js",
+  "scripts": {
+    "test": "success"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dev-mrinal/nodeSample.git"
+  },
+  "keywords": [
+    "NodeJS",
+    "ReactJS",
+    "HTML5"
+  ],
+  "author": "Mrinal Mondal",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dev-mrinal/nodeSample/issues"
+  },
+  "homepage": "https://github.com/dev-mrinal/nodeSample#readme",
+  "dependencies": {
+    "express": "^4.15.4",
+    "express-mysql-session": "^1.2.2"
+  }
+}

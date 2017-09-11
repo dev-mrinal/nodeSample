@@ -4,6 +4,7 @@ var http     = require('http'),
 	parser   = require('body-parser');
 var session = require('express-session');
 var MySQLStore = require('express-mysql-session')(session);
+var app = express();
 
 var connection = mysql.createConnection({
   host     : 'localhost',
@@ -14,9 +15,24 @@ var connection = mysql.createConnection({
 
 var sessionStore = new MySQLStore({}/* session store options */, connection);
 
-var app = express();
+app.use(session({
+    key: 'session_cookie_name',
+    secret: 'session_cookie_secret',
+    store: sessionStore,
+    resave: false,
+    saveUninitialized: false
+}));
+
+
 app.use(parser.json());
 app.use(parser.urlencoded({ extended: true }));
+
+
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
 
 connection.connect(function(err){
 if(!err) {
@@ -27,8 +43,49 @@ if(!err) {
 });
 
 
-app.get('/', function (req, res) {
-	res.send('<html><body><p>Welcome to sShop 0.1</p></body></html>');
+
+app.get('/user/', function (req,res) {
+	//var id = req.params.id;
+
+	connection.query('SELECT * from nd_products', function(err, rows, fields) {
+  		if (!err){
+  			var response = [];
+
+			if (rows.length != 0) {
+				response.push({'result' : 'success', 'data' : rows});
+			} else {
+				response.push({'result' : 'error', 'msg' : 'No Results Found'});
+			}
+
+			res.setHeader('Content-Type', 'application/json');
+	    	res.status(200).send(JSON.stringify(response));
+  		} else {
+		    res.status(400).send(err);
+	  	}
+	});
+});
+
+
+
+app.get('/product/', function (req,res) {
+	//var id = req.params.id;
+
+	connection.query('SELECT * from nd_products', function(err, rows, fields) {
+  		if (!err){
+  			var response = [];
+
+			if (rows.length != 0) {
+				response.push({'result' : 'success', 'data' : rows});
+			} else {
+				response.push({'result' : 'error', 'msg' : 'No Results Found'});
+			}
+
+			res.setHeader('Content-Type', 'application/json');
+	    	res.status(200).send(JSON.stringify(response));
+  		} else {
+		    res.status(400).send(err);
+	  	}
+	});
 });
 
 
